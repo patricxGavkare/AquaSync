@@ -1,0 +1,21 @@
+{
+  "name": "aquasync-pccoe",
+  "version": "1.0.0",
+  "description": "AquaSync: AI-Driven Predictive Municipal Irrigation Control - PCCOE Grand Challenge 2026",
+  "scripts": {
+    "start": "node backend/server.js",
+    "backend": "node backend/server.js",
+    "frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "test:api": "node backend/test_api.js"
+  },
+  "keywords": [
+    "aquasync",
+    "pccoe-2026",
+    "smart-city",
+    "irrigation-ai",
+    "climate-change"
+  ],
+  "author": "Pratik Gavkare & Team (B.Tech CSE AIML)",
+  "license": "MIT"
+}

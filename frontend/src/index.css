@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #0d1117;
+    color: #e6edf3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #11141d;
+}
+::-webkit-scrollbar-thumb {
+  background: #252b3b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* Leaflet Dark Mode styling overrides */
+.leaflet-container {
+  background: #131722 !important;
+  font-family: inherit !important;
+  border-radius: 1rem;
+}
+.leaflet-popup-content-wrapper {
+  background: #1e2433 !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+}
+.leaflet-popup-tip {
+  background: #1e2433 !important;
+  border: 1px solid #334155;
+}
+.leaflet-bar a {
+  background-color: #1e2433 !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+.leaflet-bar a:hover {
+  background-color: #2b3347 !important;
+}
