@@ -308,9 +308,18 @@ app.get('/api/analytics/hourly', async (req, res) => {
 app.post('/api/parks', (req, res) => {
   try {
     const { name, zone, latitude, longitude, totalAreaSqm, irrigatedAreaSqm, watchmanName, watchmanPhone } = req.body;
-    const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return res.status(400).json({ error: 'Valid park name is required' });
+    }
 
-    const waterNeed = Math.round(Number(irrigatedAreaSqm) * 3.5);
+    const id = name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const existing = db.prepare('SELECT id FROM parks WHERE id = ?').get(id);
+    if (existing) {
+      return res.status(409).json({ error: 'A park or corridor with this name already exists' });
+    }
+
+    const waterNeed = Math.round(Math.max(1000, Number(irrigatedAreaSqm) || 15000) * 3.5);
 
     db.prepare(`
       INSERT INTO parks (

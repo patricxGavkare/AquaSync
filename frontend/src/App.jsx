@@ -24,32 +24,28 @@ export default function App() {
   const [isAddParkOpen, setIsAddParkOpen] = useState(false);
   const [selectedParkForWatchman, setSelectedParkForWatchman] = useState(null);
 
-  // Fetch all initial data
+  // Fetch all initial data concurrently
   const loadData = async () => {
     try {
-      // 1. Live Weather
-      const weatherRes = await fetch('/api/weather/live');
+      const [weatherRes, parksRes, summaryRes, hourlyRes] = await Promise.all([
+        fetch('/api/weather/live'),
+        fetch('/api/parks'),
+        fetch('/api/metrics/summary'),
+        fetch('/api/analytics/hourly')
+      ]);
+
       if (weatherRes.ok) {
         const wData = await weatherRes.json();
         setWeather(wData);
       }
-
-      // 2. Parks
-      const parksRes = await fetch('/api/parks');
       if (parksRes.ok) {
         const pData = await parksRes.json();
         setParks(pData);
       }
-
-      // 3. Metrics Summary
-      const summaryRes = await fetch('/api/metrics/summary');
       if (summaryRes.ok) {
         const sData = await summaryRes.json();
         setSummary(sData);
       }
-
-      // 4. Hourly Analytics
-      const hourlyRes = await fetch('/api/analytics/hourly');
       if (hourlyRes.ok) {
         const hData = await hourlyRes.json();
         setHourlyData(hData.timeline);

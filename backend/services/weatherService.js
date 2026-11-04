@@ -65,8 +65,14 @@ async function fetchPuneWeather() {
     const weatherCode = current.weather_code || 2;
     const wmoInfo = WMO_CODE_MAP[weatherCode] || { label: 'Partly Cloudy', icon: 'CloudSun', condition: 'Cloudy' };
 
-    // Find next 12 hours rainfall sum and max probability
-    const currentHourIndex = new Date().getHours();
+    // Find next 12 hours rainfall sum and max probability in IST (Asia/Kolkata)
+    const istHourStr = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Kolkata',
+      hour: 'numeric',
+      hour12: false
+    }).format(new Date());
+    const currentHourIndex = parseInt(istHourStr, 10) % 24;
+
     const next12HoursRain = hourly.precipitation ? hourly.precipitation.slice(currentHourIndex, currentHourIndex + 12).reduce((a, b) => a + b, 0) : 14.2;
     const next12HoursMaxProb = hourly.precipitation_probability ? Math.max(...hourly.precipitation_probability.slice(currentHourIndex, currentHourIndex + 12)) : 75;
 

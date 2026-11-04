@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Smartphone, CloudRain, CheckCircle, AlertTriangle, Languages } from 'lucide-react';
 
 export default function WatchmanModal({ isOpen, onClose, selectedPark, onAcknowledgeSuccess }) {
@@ -6,16 +6,21 @@ export default function WatchmanModal({ isOpen, onClose, selectedPark, onAcknowl
   const [acknowledged, setAcknowledged] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  if (!isOpen) return null;
-
   const park = selectedPark || {
     id: 'sarasbaug',
     name: 'Sarasbaug Municipal Garden',
     zone: 'Swargate (South Pune)',
     watchman_name: 'Pandurang More',
+    water_need_liters: 175000,
     rain_expected_mm: 14.2,
     scheduled_time: '06:00 AM'
   };
+
+  useEffect(() => {
+    setAcknowledged(false);
+  }, [park.id, isOpen]);
+
+  if (!isOpen) return null;
 
   const handleAcknowledge = async () => {
     setLoading(true);
@@ -103,7 +108,9 @@ export default function WatchmanModal({ isOpen, onClose, selectedPark, onAcknowl
               </div>
               <div className="flex justify-between text-slate-300">
                 <span>{lang === 'mr' ? 'बचत होणारे पाणी:' : 'Water Saved:'}</span>
-                <span className="font-bold text-cyan-400">175,000 Liters</span>
+                <span className="font-bold text-cyan-400">
+                  {(park.water_need_liters || 175000).toLocaleString()} Liters
+                </span>
               </div>
             </div>
           </div>

@@ -15,13 +15,15 @@ const TARIFFS = {
  * Calculates Reference Evapotranspiration (ET0 in mm/day) using FAO-56 Penman-Monteith physics.
  * @param {number} tempCelsius - Mean temperature in °C
  * @param {number} relativeHumidity - Humidity percentage (0-100)
- * @param {number} windSpeedKmh - Wind speed in km/h
- * @param {number} solarRadiationMj - Solar radiation in MJ/m²/day (estimated or fetched)
+ * @param {number} windSpeedKmh - Wind speed at 10m in km/h
+ * @param {number} solarRadiationMj - Solar radiation in MJ/m²/day
  * @returns {number} ET0 in mm/day
  */
-function calculateFAO56ET0(tempCelsius, relativeHumidity, windSpeedKmh = 10, solarRadiationMj = 18.0) {
-  // Convert wind speed from km/h to m/s at 2m height
-  const u2 = Math.max(0.5, windSpeedKmh / 3.6);
+function calculateFAO56ET0(tempCelsius, relativeHumidity, windSpeedKmh = 12, solarRadiationMj = 18.0) {
+  // Convert wind speed from 10m height (standard meteorological mast) to 2m height (FAO-56 standard)
+  // FAO-56 logarithmic profile: u2 = u10 * (4.87 / ln(67.8 * 10 - 5.42)) ≈ u10 * 0.748
+  const windMps10m = Math.max(0.2, windSpeedKmh / 3.6);
+  const u2 = Math.max(0.5, windMps10m * 0.748);
   const T = tempCelsius;
   
   // Saturation vapor pressure (es) in kPa (Tetens equation)
@@ -37,7 +39,7 @@ function calculateFAO56ET0(tempCelsius, relativeHumidity, windSpeedKmh = 10, sol
   const delta = (4098 * es) / Math.pow(T + 237.3, 2);
   
   // Psychrometric constant (gamma) in kPa/°C for Pune altitude (~560m above sea level)
-  const atmosphericPressure = 101.3 * Math.pow((293.0 - 0.0065 * 560.0) / 293.0, 5.26); // ~95 kPa
+  const atmosphericPressure = 101.3 * Math.pow((293.0 - 0.0065 * 560.0) / 293.0, 5.26); // ~95.0 kPa
   const gamma = 0.000665 * atmosphericPressure; // ~0.063 kPa/°C
   
   // Net radiation (Rn) in MJ/m²/day (approx 65% of incoming solar radiation)
@@ -50,8 +52,8 @@ function calculateFAO56ET0(tempCelsius, relativeHumidity, windSpeedKmh = 10, sol
   
   const et0 = numerator / denominator;
   
-  // Constrain to realistic Pune range: 1.5mm (heavy monsoon) to 7.0mm (peak May heatwave)
-  return Math.round(Math.max(1.5, Math.min(7.5, et0)) * 100) / 100;
+  // Constrain to realistic Pune range: 1.0mm (monsoon monsoon) to 7.5mm (peak May heatwave)
+  return Math.round(Math.max(1.0, Math.min(7.5, et0)) * 100) / 100;
 }
 
 /**
@@ -75,15 +77,20 @@ function evaluateIrrigationDecision({
   rainForecastMm = 0,
   rainProbabilityPct = 0
 }) {
+  // Dynamically estimate solar radiation (MJ/m²/day) based on cloud cover & precipitation probability
+  const solarRadiationMj = rainProbabilityPct > 70 
+    ? 9.5 
+    : (relativeHumidity > 80 ? 13.5 : 20.0);
+
   // 1. Calculate Reference ET0 and Plant Water Requirement (ETc)
-  const et0_mm = calculateFAO56ET0(tempCelsius, relativeHumidity, windSpeedKmh);
+  const et0_mm = calculateFAO56ET0(tempCelsius, relativeHumidity, windSpeedKmh, solarRadiationMj);
   const etc_mm = Math.round(et0_mm * cropCoefficient * 100) / 100;
   
   // 2. Daily Crop Water Demand in Liters (1 mm on 1 sqm = 1 Liter)
   const dailyWaterDemandLiters = Math.round(irrigatedAreaSqm * etc_mm);
   
   // 3. Effective Precipitation (Peff)
-  // Effective rainfall is discounted by probability and surface runoff factor (~80% retention on lawns)
+  // Effective rainfall is discounted by probability and surface runoff factor (~85% retention on lawns)
   const effectiveRainMm = Math.round(rainForecastMm * (rainProbabilityPct / 100.0) * 0.85 * 100) / 100;
   
   // 4. Decision Logic
@@ -99,8 +106,9 @@ function evaluateIrrigationDecision({
   } else if (relativeHumidity >= 85 || (rainForecastMm >= 3.0 && rainProbabilityPct >= 50)) {
     // Humid overcast conditions: soil retains moisture, watchman should verify on ground
     decision = 'ALERT';
+    // Savings are potential / pending until confirmed by watchman
     litersSaved = dailyWaterDemandLiters;
-    reasoning = `High atmospheric humidity (${relativeHumidity}%) and cloud cover significantly lowers soil evapotranspiration. Ground watchman alert dispatched.`;
+    reasoning = `High atmospheric humidity (${relativeHumidity}%) and cloud cover significantly lowers soil evapotranspiration. Ground watchman alert dispatched for manual valve verification.`;
   } else {
     // Dry conditions: scheduled watering must proceed
     decision = 'SCHEDULED';
