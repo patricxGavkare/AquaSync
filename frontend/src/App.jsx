@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import KpiMetrics from './components/KpiMetrics';
-import HeroCard from './components/HeroCard';
-import ParkCards from './components/ParkCards';
-import ForecastCard from './components/ForecastCard';
-import PuneMap from './components/PuneMap';
-import OverviewChart from './components/OverviewChart';
+import DashboardHome from './components/DashboardHome';
+import MapView from './components/MapView';
+import ForecastView from './components/ForecastView';
+import SimulationView from './components/SimulationView';
+import AnalyticsView from './components/AnalyticsView';
 import SimulationModal from './components/SimulationModal';
-import WatchmanModal from './components/WatchmanModal';
 import AddParkModal from './components/AddParkModal';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'parks' | 'schedule' | 'simulate' | 'analytics'
   const [weather, setWeather] = useState(null);
   const [parks, setParks] = useState([]);
   const [summary, setSummary] = useState(null);
   const [hourlyData, setHourlyData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedParkForMap, setSelectedParkForMap] = useState(null);
 
   // Modals state
   const [isSimulateOpen, setIsSimulateOpen] = useState(false);
-  const [isWatchmanOpen, setIsWatchmanOpen] = useState(false);
   const [isAddParkOpen, setIsAddParkOpen] = useState(false);
-  const [selectedParkForWatchman, setSelectedParkForWatchman] = useState(null);
 
   // Fetch all initial data concurrently
   const loadData = async () => {
@@ -58,11 +56,14 @@ export default function App() {
   useEffect(() => {
     loadData();
 
-    // Deep-linking / URL query param modal trigger for demos & automated visual testing
+    // Deep-linking / URL query param modal trigger for demos
     const params = new URLSearchParams(window.location.search);
     const modalParam = params.get('modal');
+    const tabParam = params.get('tab');
+    if (tabParam && ['dashboard', 'parks', 'schedule', 'simulate', 'analytics'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
     if (modalParam === 'simulate') setIsSimulateOpen(true);
-    if (modalParam === 'watchman') setIsWatchmanOpen(true);
     if (modalParam === 'addpark') setIsAddParkOpen(true);
 
     // Auto-refresh every 60 seconds
@@ -82,85 +83,87 @@ export default function App() {
     }
   };
 
-  // Open watchman modal for specific park
-  const handleOpenWatchman = (park) => {
-    setSelectedParkForWatchman(park || (parks && parks[0]));
-    setIsWatchmanOpen(true);
+  // When a park is selected from search or list, focus on it in the map
+  const handleSelectParkFromSearch = (park) => {
+    setSelectedParkForMap(park.id);
+    setActiveTab('parks');
   };
 
   return (
     <div className="min-h-screen bg-[#0e121a] text-slate-100 flex flex-row font-sans selection:bg-blue-600 selection:text-white">
-      {/* 1. Slim Left Navigation Rail (Matching reference mockup!) */}
+      {/* 1. Functional Left Navigation Rail (Switches between dedicated views!) */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onOpenSimulate={() => setIsSimulateOpen(true)}
-        onOpenWatchman={() => handleOpenWatchman()}
       />
 
       {/* 2. Main Content Canvas */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {/* Top Header */}
+        {/* Top Header with Functional Interactive Search Bar */}
         <Header
           weather={weather}
-          onOpenSimulate={() => setIsSimulateOpen(true)}
-          onOpenWatchman={() => handleOpenWatchman()}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          parks={parks}
+          onSelectPark={handleSelectParkFromSearch}
+          onOpenSimulate={() => setActiveTab('simulate')}
         />
 
-        {/* Dashboard Grid Container */}
-        <main className="p-4 md:p-6 space-y-5 max-w-[1700px] w-full mx-auto">
-          {/* Top Executive KPI Metric Cards */}
-          <KpiMetrics summary={summary} />
+        {/* Dynamic Main Body: Separate dedicated view based on activeTab */}
+        <main className="p-4 md:p-6 lg:p-8 max-w-[1700px] w-full mx-auto">
+          {/* TAB 1: Modern Frontpage & Overview */}
+          {activeTab === 'dashboard' && (
+            <DashboardHome
+              weather={weather}
+              parks={parks}
+              summary={summary}
+              onTogglePark={handleTogglePark}
+              onOpenAddPark={() => setIsAddParkOpen(true)}
+              setActiveTab={setActiveTab}
+            />
+          )}
 
-          {/* Main Bento Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            {/* Left Column (Span 4 of 12) -> Hero Card + 3 Landmark Parks */}
-            <div className="lg:col-span-4 flex flex-col gap-4">
-              {/* Vibrant Blue Hero Card (Direct match to reference image!) */}
-              <HeroCard weather={weather} />
+          {/* TAB 2: Dedicated Full Pune Regional Map View */}
+          {activeTab === 'parks' && (
+            <MapView
+              parks={parks}
+              onTogglePark={handleTogglePark}
+              selectedParkId={selectedParkForMap}
+              onSelectPark={(p) => setSelectedParkForMap(p.id)}
+            />
+          )}
 
-              {/* Landmark Park Cards */}
-              <ParkCards
-                parks={parks}
-                onTogglePark={handleTogglePark}
-                onOpenAddPark={() => setIsAddParkOpen(true)}
-                onOpenWatchman={handleOpenWatchman}
-              />
-            </div>
+          {/* TAB 3: Dedicated Microclimate & 24h / 7-Day Forecast View */}
+          {activeTab === 'schedule' && (
+            <ForecastView
+              weather={weather}
+              parks={parks}
+            />
+          )}
 
-            {/* Right Column (Span 8 of 12) -> Forecast + Map + Spline Chart */}
-            <div className="lg:col-span-8 flex flex-col gap-5">
-              {/* Top Row: Forecast (Left) + Pune Map (Right) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* 24-Hour Forecast Card (Matching reference mockup!) */}
-                <ForecastCard weather={weather} />
+          {/* TAB 4: Dedicated Judges' Live Simulation Lab View */}
+          {activeTab === 'simulate' && (
+            <SimulationView
+              onSimulationApplied={loadData}
+            />
+          )}
 
-                {/* Interactive Pune Leaflet Map (Strictly Pune bounded!) */}
-                <PuneMap
-                  parks={parks}
-                  onSelectPark={(p) => handleOpenWatchman(p)}
-                />
-              </div>
-
-              {/* Bottom Row: Smooth Glowing Spline Chart (Direct match to reference mockup!) */}
-              <OverviewChart hourlyData={hourlyData} />
-            </div>
-          </div>
+          {/* TAB 5: Dedicated Water, Energy & Tariff Audit Analytics View */}
+          {activeTab === 'analytics' && (
+            <AnalyticsView
+              summary={summary}
+              hourlyData={hourlyData}
+              parks={parks}
+            />
+          )}
         </main>
       </div>
 
-      {/* 3. Interactive Modals for Demo & Presentation */}
+      {/* 3. Helper Modals */}
       <SimulationModal
         isOpen={isSimulateOpen}
         onClose={() => setIsSimulateOpen(false)}
         onRunSimulation={loadData}
-      />
-
-      <WatchmanModal
-        isOpen={isWatchmanOpen}
-        onClose={() => setIsWatchmanOpen(false)}
-        selectedPark={selectedParkForWatchman}
-        onAcknowledgeSuccess={loadData}
       />
 
       <AddParkModal
