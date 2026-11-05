@@ -36,24 +36,29 @@ export default function ParkCards({ parks, onTogglePark, onOpenAddPark, onOpenWa
         return (
           <div
             key={park.id}
-            className="p-4 rounded-2xl bg-[#1c2230] border border-[#262c3d] hover:border-slate-600 transition-all shadow-sm flex flex-col justify-between"
+            className="p-3.5 rounded-2xl bg-[#1c2230] border border-[#262c3d] hover:border-slate-600 transition-all shadow-sm flex flex-col justify-between"
           >
             {/* Top row: Name, Zone & Status */}
             <div className="flex items-start justify-between gap-2">
-              <div>
-                <h4 className="text-sm font-bold text-white tracking-tight">{park.name}</h4>
-                <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                  <span>📍 {park.zone}</span>
-                  <span>•</span>
-                  <span>{(park.irrigated_area_sqm / 1000).toFixed(0)}k m² turf</span>
-                </p>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-[#151923] border border-[#252b3d] flex items-center justify-center text-sm shadow-inner">
+                  {isOverridden ? '🌧️' : '☀️'}
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white tracking-tight leading-none">{park.name}</h4>
+                  <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-1">
+                    <span>📍 {park.zone}</span>
+                    <span>•</span>
+                    <span>{(park.irrigated_area_sqm / 1000).toFixed(0)}k m² turf</span>
+                  </p>
+                </div>
               </div>
 
               {getStatusBadge(park.status)}
             </div>
 
             {/* Middle metrics row */}
-            <div className="grid grid-cols-3 gap-2 my-3 p-2.5 rounded-xl bg-[#151923] border border-[#252b3d] text-xs">
+            <div className="grid grid-cols-3 gap-2 my-2.5 p-2 rounded-xl bg-[#151923] border border-[#252b3d] text-xs">
               <div>
                 <span className="text-[10px] text-slate-400 block">Rain Expected</span>
                 <span className="font-semibold text-white">{park.rain_expected_mm} mm</span>

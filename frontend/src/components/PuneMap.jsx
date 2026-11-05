@@ -94,11 +94,11 @@ export default function PuneMap({ parks, onSelectPark }) {
           scrollWheelZoom={false}
           style={{ height: '100%', width: '100%', minHeight: '220px' }}
         >
-          {/* Dark Matter Tiles from CartoDB */}
+          {/* Dark Esri World Dark Gray Canvas (Clean, Watermark-Free) */}
           <TileLayer
-            attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            maxZoom={18}
+            attribution='&copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, &copy; OpenStreetMap contributors'
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+            maxZoom={16}
           />
 
           {parks && parks.map((park) => {
@@ -173,6 +173,13 @@ export default function PuneMap({ parks, onSelectPark }) {
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span className="text-slate-300">Scheduled</span>
           </div>
+        </div>
+
+        {/* Floating Pune Quick Stats Pill (Directly matching Reference Mockup overlay!) */}
+        <div className="absolute top-3 right-3 bg-[#11141d]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#2d354a] z-[400] shadow-xl flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className="text-xs font-bold text-white">24° Pune</span>
+          <span className="text-[10px] text-cyan-400 font-medium px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40">AI Mesh</span>
         </div>
       </div>
     </div>

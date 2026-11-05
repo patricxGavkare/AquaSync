@@ -56,12 +56,21 @@ export default function HeroCard({ weather }) {
           </div>
         </div>
 
-        {/* Stylized Sun/Cloud Graphic */}
-        <div className="relative">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-200 flex items-center justify-center shadow-lg shadow-amber-500/40 animate-pulse">
-            <Sun className="w-12 h-12 text-amber-900/80" />
+        {/* Stylized 3D Sun Behind Fluffy Cloud (Direct Match to Reference Mockup!) */}
+        <div className="relative flex items-center justify-center w-24 h-24 select-none">
+          {/* Golden Glowing Sun disk behind */}
+          <div className="absolute top-1 right-1 w-13 h-13 rounded-full bg-gradient-to-tr from-amber-400 via-amber-300 to-yellow-200 shadow-[0_0_24px_rgba(251,191,36,0.6)] flex items-center justify-center animate-pulse">
+            <Sun className="w-8 h-8 text-amber-950/70" />
           </div>
-          <div className="absolute -bottom-2 -left-3 px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-[10px] font-medium border border-white/30 text-white">
+          {/* Fluffy Translucent Cloud in front */}
+          <div className="absolute bottom-2 left-1 z-10">
+            <div className="relative w-18 h-10 bg-white/95 rounded-full shadow-lg border border-white/60">
+              <div className="absolute -top-4 left-3 w-8 h-8 bg-white rounded-full"></div>
+              <div className="absolute -top-2 left-7 w-7 h-7 bg-white/90 rounded-full"></div>
+            </div>
+          </div>
+          {/* Condition tag */}
+          <div className="absolute -bottom-1 right-0 z-20 px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-md text-[10px] font-semibold border border-white/20 text-white">
             Monsoon
           </div>
         </div>

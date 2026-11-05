@@ -14,6 +14,10 @@
 
 ---
 
+![AquaSync Dashboard Preview](docs/preview.png)
+
+---
+
 ## 📌 Executive Summary
 
 Municipal corporations in cities like **Pune (PMC)** and **Pimpri-Chinchwad (PCMC)** waste millions of liters of purified treated water and megawatts of electrical pumping power by running automated park sprinklers on rigid mechanical timers, even right before or during heavy monsoon rain events.

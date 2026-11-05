@@ -212,6 +212,22 @@ export default function OverviewChart({ hourlyData }) {
           </div>
         )}
       </div>
+
+      {/* Bottom Pune Regional Climate Insights Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 mt-1 border-t border-[#262c3d] text-xs">
+        <div className="p-2 rounded-xl bg-[#151923] border border-[#252b3d]">
+          <span className="text-[10px] text-slate-400 block">Peak ET₀ Window</span>
+          <span className="font-semibold text-white">12:00 PM – 2:30 PM (Solar Noon)</span>
+        </div>
+        <div className="p-2 rounded-xl bg-[#151923] border border-[#252b3d]">
+          <span className="text-[10px] text-slate-400 block">Municipal Avoidance</span>
+          <span className="font-semibold text-cyan-400">₹8,609 (PMC Water Tariff)</span>
+        </div>
+        <div className="p-2 rounded-xl bg-[#151923] border border-[#252b3d]">
+          <span className="text-[10px] text-slate-400 block">Runoff Prevention</span>
+          <span className="font-semibold text-emerald-400">94.2% Municipal Efficiency</span>
+        </div>
+      </div>
     </div>
   );
 }

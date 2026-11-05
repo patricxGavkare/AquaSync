@@ -57,6 +57,14 @@ export default function App() {
 
   useEffect(() => {
     loadData();
+
+    // Deep-linking / URL query param modal trigger for demos & automated visual testing
+    const params = new URLSearchParams(window.location.search);
+    const modalParam = params.get('modal');
+    if (modalParam === 'simulate') setIsSimulateOpen(true);
+    if (modalParam === 'watchman') setIsWatchmanOpen(true);
+    if (modalParam === 'addpark') setIsAddParkOpen(true);
+
     // Auto-refresh every 60 seconds
     const interval = setInterval(loadData, 60000);
     return () => clearInterval(interval);
