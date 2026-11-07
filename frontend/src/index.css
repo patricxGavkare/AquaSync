@@ -9,52 +9,57 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: #0d1117;
-    color: #e6edf3;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #0b0d14;
+    color: #eef0f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+
+  /* Universal tabular figures for data readability */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom quiet scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #11141d;
+  background: #0b0d14;
 }
 ::-webkit-scrollbar-thumb {
-  background: #252b3b;
+  background: #1e2433;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: #2b3347;
 }
 
-/* Leaflet Dark Mode styling overrides */
+/* Leaflet Dark Mode styling overrides (Quiet, designed) */
 .leaflet-container {
-  background: #131722 !important;
+  background: #0e111a !important;
   font-family: inherit !important;
-  border-radius: 1rem;
+  border-radius: 14px;
 }
 .leaflet-popup-content-wrapper {
-  background: #1e2433 !important;
-  color: #f1f5f9 !important;
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+  background: #141824 !important;
+  color: #eef0f5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
 }
 .leaflet-popup-tip {
-  background: #1e2433 !important;
-  border: 1px solid #334155;
+  background: #141824 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .leaflet-bar a {
-  background-color: #1e2433 !important;
-  border-color: #334155 !important;
-  color: #f1f5f9 !important;
+  background-color: #141824 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #eef0f5 !important;
 }
 .leaflet-bar a:hover {
-  background-color: #2b3347 !important;
+  background-color: #1e2435 !important;
 }

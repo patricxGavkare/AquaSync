@@ -12,27 +12,27 @@ import {
 
 export default function Sidebar({ activeTab, setActiveTab }) {
   const navItems = [
-    { id: 'dashboard', icon: LayoutGrid, label: 'Dashboard & Overview' },
-    { id: 'parks', icon: MapPin, label: 'Pune Regional Map' },
-    { id: 'schedule', icon: Calendar, label: 'Microclimate Forecast' },
-    { id: 'simulate', icon: Sliders, label: 'AI Simulation Lab' },
-    { id: 'analytics', icon: BarChart3, label: 'Water & Tariff Analytics' },
+    { id: 'dashboard', icon: LayoutGrid, label: 'Overview' },
+    { id: 'parks', icon: MapPin, label: 'Pune Map' },
+    { id: 'schedule', icon: Calendar, label: 'Forecast' },
+    { id: 'simulate', icon: Sliders, label: 'Simulation Lab' },
+    { id: 'analytics', icon: BarChart3, label: 'Analytics' },
   ];
 
   return (
-    <aside className="w-16 md:w-20 bg-[#161a23] border-r border-[#262c3d] flex flex-col items-center py-6 justify-between shrink-0 min-h-screen z-30">
+    <aside className="w-16 md:w-18 bg-[#07080d] border-r border-white/[0.08] flex flex-col items-center py-5 justify-between shrink-0 min-h-screen z-30 select-none">
       {/* Top Logo */}
       <div className="flex flex-col items-center gap-6">
         <button 
           onClick={() => setActiveTab('dashboard')}
-          className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/25 cursor-pointer hover:scale-105 transition-transform"
-          title="AquaSync - Return to Dashboard"
+          className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white cursor-pointer hover:bg-blue-500 transition-colors"
+          title="AquaSync - Return to Overview"
         >
-          <Droplets className="w-6 h-6 text-white" />
+          <Droplets className="w-5 h-5" strokeWidth={1.75} />
         </button>
 
         {/* Navigation Icon List */}
-        <nav className="flex flex-col gap-3 mt-4">
+        <nav className="flex flex-col gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -41,15 +41,15 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 title={item.label}
-                className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all cursor-pointer group relative ${
+                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors cursor-pointer group relative ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                    : 'text-slate-400 hover:text-white hover:bg-[#202636]'
+                    ? 'bg-[#1a2030] text-blue-400 border border-white/[0.1]'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-[#121622]'
                 }`}
               >
-                <Icon className="w-5 h-5" />
-                {/* Floating tooltip */}
-                <span className="absolute left-16 px-2.5 py-1 bg-slate-900 text-slate-200 text-xs font-medium rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap border border-slate-700 shadow-xl">
+                <Icon className="w-4 h-4" strokeWidth={1.5} />
+                {/* Quiet Floating tooltip */}
+                <span className="absolute left-14 px-2 py-1 bg-[#141824] text-slate-200 text-xs font-normal rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap border border-white/[0.1] shadow-lg">
                   {item.label}
                 </span>
               </button>
@@ -59,20 +59,20 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       </div>
 
       {/* Bottom Utility Icons */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <button 
           onClick={() => setActiveTab('dashboard')}
-          title="AquaSync Settings"
-          className="w-11 h-11 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#202636] transition-colors cursor-pointer"
+          title="Settings"
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-200 hover:bg-[#121622] transition-colors cursor-pointer"
         >
-          <Settings className="w-5 h-5" />
+          <Settings className="w-4 h-4" strokeWidth={1.5} />
         </button>
         <button 
           onClick={() => setActiveTab('dashboard')}
-          title="AquaSync Status"
-          className="w-11 h-11 rounded-xl flex items-center justify-center text-blue-400/80 hover:text-cyan-300 hover:bg-blue-950/40 transition-colors cursor-pointer"
+          title="System Online"
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-200 hover:bg-[#121622] transition-colors cursor-pointer"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" strokeWidth={1.5} />
         </button>
       </div>
     </aside>

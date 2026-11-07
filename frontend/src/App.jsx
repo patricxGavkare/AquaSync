@@ -90,7 +90,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0e121a] text-slate-100 flex flex-row font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#0b0d14] text-slate-100 flex flex-row font-sans selection:bg-white/[0.15] selection:text-white">
       {/* 1. Functional Left Navigation Rail (Switches between dedicated views!) */}
       <Sidebar
         activeTab={activeTab}

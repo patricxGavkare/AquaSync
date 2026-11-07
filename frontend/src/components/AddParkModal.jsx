@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, MapPin } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 
 export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
   const [name, setName] = useState('');
@@ -44,21 +44,21 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-[#181d28] border border-[#2d364a] rounded-3xl w-full max-w-md overflow-hidden shadow-2xl">
-        <div className="px-6 py-4 border-b border-[#283144] flex items-center justify-between bg-[#151923]">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-[#11141c] border border-white/[0.08] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+        <div className="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between bg-[#0b0d14]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#1a2030] text-slate-300 flex items-center justify-center border border-white/[0.08]">
               <Plus className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Add Municipal Green Space</h3>
-              <span className="text-[10px] text-emerald-400">Future Scope City Expansion</span>
+              <h3 className="text-sm font-semibold text-white">Add Municipal Green Space</h3>
+              <span className="text-[10px] text-slate-400 font-mono">Future scope city expansion</span>
             </div>
           </div>
 
-          <button onClick={onClose} className="text-slate-400 hover:text-white">
-            <X className="w-4 h-4" />
+          <button onClick={onClose} className="w-7 h-7 rounded-md bg-[#1a2030] text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
 
@@ -71,7 +71,7 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., PCMC BRTS Green Belt - Akurdi"
-              className="w-full bg-[#121620] border border-[#2b3347] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#1a2030]/60 border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-white/[0.24]"
             />
           </div>
 
@@ -82,7 +82,7 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
               value={zone}
               onChange={(e) => setZone(e.target.value)}
               placeholder="e.g., Nigdi - Akurdi Zone"
-              className="w-full bg-[#121620] border border-[#2b3347] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#1a2030]/60 border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-white/[0.24]"
             />
           </div>
 
@@ -93,7 +93,7 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
                 type="number"
                 value={totalAreaSqm}
                 onChange={(e) => setTotalAreaSqm(e.target.value)}
-                className="w-full bg-[#121620] border border-[#2b3347] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-[#1a2030]/60 border border-white/[0.08] rounded-lg px-3 py-2 text-white font-mono tabular-nums focus:outline-none focus:border-white/[0.24]"
               />
             </div>
             <div>
@@ -102,7 +102,7 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
                 type="number"
                 value={irrigatedAreaSqm}
                 onChange={(e) => setIrrigatedAreaSqm(e.target.value)}
-                className="w-full bg-[#121620] border border-[#2b3347] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-[#1a2030]/60 border border-white/[0.08] rounded-lg px-3 py-2 text-white font-mono tabular-nums focus:outline-none focus:border-white/[0.24]"
               />
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
               type="text"
               value={watchmanName}
               onChange={(e) => setWatchmanName(e.target.value)}
-              className="w-full bg-[#121620] border border-[#2b3347] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#1a2030]/60 border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-white/[0.24]"
             />
           </div>
 
@@ -121,9 +121,9 @@ export default function AddParkModal({ isOpen, onClose, onParkAdded }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all shadow-md shadow-blue-600/30 cursor-pointer"
+              className="w-full py-2.5 rounded-lg bg-white text-[#0b0d14] hover:bg-slate-200 font-medium text-xs transition-colors cursor-pointer"
             >
-              {loading ? 'Adding to Municipal Registry...' : 'Enroll in AquaSync AI Network'}
+              {loading ? 'Adding to Municipal Registry...' : 'Enroll in AquaSync network'}
             </button>
           </div>
         </form>

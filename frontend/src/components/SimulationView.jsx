@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Sliders, Droplet, Zap, IndianRupee, RotateCcw, AlertTriangle, CheckCircle2, CloudRain } from 'lucide-react';
+import { Sliders, RotateCcw, AlertTriangle, CheckCircle2, CloudRain } from 'lucide-react';
 
 export default function SimulationView({ onSimulationApplied }) {
   const [temp, setTemp] = useState(28);
@@ -45,16 +45,16 @@ export default function SimulationView({ onSimulationApplied }) {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-[#1c2230] border border-blue-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-[#11141c] border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
-            <Sparkles className="w-6 h-6 text-yellow-300" />
+          <div className="w-10 h-10 rounded-lg bg-[#1a2030] border border-white/[0.08] flex items-center justify-center text-slate-300">
+            <Sliders className="w-5 h-5 text-blue-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white tracking-tight">
-              Hackathon Judges' Live Simulation Lab
+            <h2 className="text-lg font-semibold text-white tracking-tight">
+              Judges' Live Simulation Lab
             </h2>
-            <p className="text-sm text-slate-300 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Dynamically manipulate Pune microclimate variables to observe real-time FAO-56 Penman-Monteith AI overrides.
             </p>
           </div>
@@ -64,21 +64,21 @@ export default function SimulationView({ onSimulationApplied }) {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => applyPreset(24, 92, 18, 25.0, 95)}
-            className="px-3 py-1.5 rounded-xl bg-blue-950/70 border border-blue-700/60 hover:bg-blue-900 text-blue-200 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+            className="px-2.5 py-1.5 rounded-lg bg-[#1a2030] border border-white/[0.08] hover:border-white/[0.18] text-slate-300 text-xs font-medium transition-colors cursor-pointer"
           >
-            🌧️ Heavy Monsoon (25mm)
+            Heavy monsoon (25mm)
           </button>
           <button
             onClick={() => applyPreset(39, 28, 12, 0.0, 5)}
-            className="px-3 py-1.5 rounded-xl bg-amber-950/70 border border-amber-700/60 hover:bg-amber-900 text-amber-200 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+            className="px-2.5 py-1.5 rounded-lg bg-[#1a2030] border border-white/[0.08] hover:border-white/[0.18] text-slate-300 text-xs font-medium transition-colors cursor-pointer"
           >
-            ☀️ Peak Summer (39°C)
+            Peak summer (39°C)
           </button>
           <button
             onClick={() => applyPreset(27, 65, 8, 1.2, 35)}
-            className="px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-600 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+            className="px-2.5 py-1.5 rounded-lg bg-[#1a2030] border border-white/[0.08] hover:border-white/[0.18] text-slate-300 text-xs font-medium transition-colors cursor-pointer"
           >
-            🌦️ Light Drizzle (1.2mm)
+            Light drizzle (1.2mm)
           </button>
         </div>
       </div>
@@ -86,11 +86,10 @@ export default function SimulationView({ onSimulationApplied }) {
       {/* Main Grid: Left Controls + Right Real-Time Results */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Interactive Sliders (Span 6) */}
-        <div className="lg:col-span-6 p-6 rounded-3xl bg-[#1c2230] border border-[#262c3d] flex flex-col justify-between space-y-5">
-          <div className="flex items-center justify-between border-b border-slate-700/50 pb-3">
-            <div className="flex items-center gap-2 text-white font-bold text-base">
-              <Sliders className="w-5 h-5 text-blue-400" />
-              <span>Microclimate Parameter Sliders</span>
+        <div className="lg:col-span-6 p-6 rounded-2xl bg-[#11141c] border border-white/[0.08] flex flex-col justify-between space-y-4">
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <div className="flex items-center gap-2 text-white font-medium text-sm">
+              <span>Microclimate parameter sliders</span>
             </div>
             <button
               onClick={() => applyPreset(28, 82, 14, 15.0, 85)}
@@ -104,8 +103,8 @@ export default function SimulationView({ onSimulationApplied }) {
           {/* Temperature Slider */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Ambient Temperature</span>
-              <span className="font-bold text-white text-sm">{temp}°C</span>
+              <span className="text-slate-400">Ambient temperature</span>
+              <span className="font-mono text-white tabular-nums">{temp}°C</span>
             </div>
             <input
               type="range"
@@ -120,8 +119,8 @@ export default function SimulationView({ onSimulationApplied }) {
           {/* Humidity Slider */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Relative Humidity</span>
-              <span className="font-bold text-white text-sm">{humidity}%</span>
+              <span className="text-slate-400">Relative humidity</span>
+              <span className="font-mono text-white tabular-nums">{humidity}%</span>
             </div>
             <input
               type="range"
@@ -129,15 +128,15 @@ export default function SimulationView({ onSimulationApplied }) {
               max="100"
               value={humidity}
               onChange={(e) => setHumidity(Number(e.target.value))}
-              className="w-full accent-cyan-400 cursor-pointer"
+              className="w-full accent-blue-500 cursor-pointer"
             />
           </div>
 
           {/* Forecast Rain Volume */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Forecast Precipitation Volume</span>
-              <span className="font-bold text-white text-sm">{rainMm.toFixed(1)} mm</span>
+              <span className="text-slate-400">Forecast precipitation volume</span>
+              <span className="font-mono text-white tabular-nums">{rainMm.toFixed(1)} mm</span>
             </div>
             <input
               type="range"
@@ -153,8 +152,8 @@ export default function SimulationView({ onSimulationApplied }) {
           {/* Rain Probability */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Rain Probability</span>
-              <span className="font-bold text-white text-sm">{rainProb}%</span>
+              <span className="text-slate-400">Rain probability</span>
+              <span className="font-mono text-white tabular-nums">{rainProb}%</span>
             </div>
             <input
               type="range"
@@ -162,7 +161,7 @@ export default function SimulationView({ onSimulationApplied }) {
               max="100"
               value={rainProb}
               onChange={(e) => setRainProb(Number(e.target.value))}
-              className="w-full accent-indigo-400 cursor-pointer"
+              className="w-full accent-blue-500 cursor-pointer"
             />
           </div>
 
@@ -170,41 +169,40 @@ export default function SimulationView({ onSimulationApplied }) {
           <button
             onClick={handleSimulate}
             disabled={loading}
-            className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-blue-600/30 transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+            className="w-full py-2.5 rounded-lg bg-white text-[#0b0d14] hover:bg-slate-200 font-medium text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 mt-2"
           >
-            <Sparkles className="w-4 h-4 text-yellow-300" />
-            <span>{loading ? 'Evaluating FAO-56 Engine...' : 'Run Real-Time AI Simulation'}</span>
+            <span>{loading ? 'Evaluating FAO-56 Engine...' : 'Run real-time simulation'}</span>
           </button>
         </div>
 
         {/* Right Column: AI Output & Decision Comparison (Span 6) */}
-        <div className="lg:col-span-6 p-6 rounded-3xl bg-[#1c2230] border border-[#262c3d] flex flex-col justify-between space-y-5">
-          <div className="flex items-center justify-between border-b border-slate-700/50 pb-3">
-            <div className="flex items-center gap-2 text-white font-bold text-base">
-              <CloudRain className="w-5 h-5 text-cyan-400" />
+        <div className="lg:col-span-6 p-6 rounded-2xl bg-[#11141c] border border-white/[0.08] flex flex-col justify-between space-y-4">
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <div className="flex items-center gap-2 text-white font-medium text-sm">
+              <CloudRain className="w-4 h-4 text-slate-400" />
               <span>AI Decision & Municipal Impact</span>
             </div>
-            <span className="text-xs text-emerald-400 font-medium">Open-Meteo Synced</span>
+            <span className="text-xs text-slate-400 font-mono">Open-Meteo Synced</span>
           </div>
 
           {simResults ? (
             <div className="space-y-4">
               {/* Decision Badge */}
-              <div className={`p-4 rounded-2xl border ${
+              <div className={`p-4 rounded-xl border ${
                 simResults.decision === 'OVERRIDE_HALT' 
-                  ? 'bg-rose-950/40 border-rose-600/60 text-rose-200'
-                  : 'bg-emerald-950/40 border-emerald-600/60 text-emerald-200'
+                  ? 'bg-[#e5484d]/10 border-[#e5484d]/25 text-[#ff8585]'
+                  : 'bg-[#4cc38a]/10 border-[#4cc38a]/25 text-[#4cc38a]'
               }`}>
-                <div className="flex items-center gap-2 font-bold text-sm">
+                <div className="flex items-center gap-2 font-medium text-xs">
                   {simResults.decision === 'OVERRIDE_HALT' ? (
                     <>
-                      <AlertTriangle className="w-5 h-5 text-rose-400" />
-                      <span>AI DECISION: EMERGENCY OVERRIDE (HALT ALL PUMPS)</span>
+                      <AlertTriangle className="w-4 h-4 text-[#e5484d]" />
+                      <span>DECISION: EMERGENCY OVERRIDE (HALT ALL PUMPS)</span>
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                      <span>AI DECISION: SCHEDULE CONFIRMED (PUMP REQUIRED)</span>
+                      <CheckCircle2 className="w-4 h-4 text-[#4cc38a]" />
+                      <span>DECISION: SCHEDULE CONFIRMED (PUMP REQUIRED)</span>
                     </>
                   )}
                 </div>
@@ -214,47 +212,47 @@ export default function SimulationView({ onSimulationApplied }) {
               </div>
 
               {/* 4 Metric Impact Cards */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-2xl bg-[#151923] border border-[#283144]">
-                  <span className="text-slate-400 text-xs block">Simulated Water Saved</span>
-                  <span className="text-lg font-bold text-cyan-400">
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
+                  <span className="text-slate-400 text-[11px] block">Simulated water saved</span>
+                  <span className="text-base font-medium text-white tabular-nums font-mono">
                     {simResults.totalLitersSaved.toLocaleString()} L
                   </span>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-[#151923] border border-[#283144]">
-                  <span className="text-slate-400 text-xs block">Grid Power Conserved</span>
-                  <span className="text-lg font-bold text-amber-400">
+                <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
+                  <span className="text-slate-400 text-[11px] block">Grid power conserved</span>
+                  <span className="text-base font-medium text-amber-300 tabular-nums font-mono">
                     {simResults.totalKwhSaved} kWh
                   </span>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-[#151923] border border-[#283144]">
-                  <span className="text-slate-400 text-xs block">PMC Budget Saved</span>
-                  <span className="text-lg font-bold text-emerald-400">
+                <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
+                  <span className="text-slate-400 text-[11px] block">PMC budget saved</span>
+                  <span className="text-base font-medium text-[#4cc38a] tabular-nums font-mono">
                     ₹ {simResults.totalInrSaved.toLocaleString()}
                   </span>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-[#151923] border border-[#283144]">
-                  <span className="text-slate-400 text-xs block">Calculated FAO-56 ET₀</span>
-                  <span className="text-lg font-bold text-indigo-300">
+                <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
+                  <span className="text-slate-400 text-[11px] block">Calculated FAO-56 ET₀</span>
+                  <span className="text-base font-medium text-slate-200 tabular-nums font-mono">
                     {simResults.simulatedEt0} mm/day
                   </span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400 space-y-3">
-              <div className="w-16 h-16 rounded-full bg-[#151923] border border-[#283144] flex items-center justify-center text-blue-400">
-                <Sliders className="w-8 h-8" />
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400 space-y-2">
+              <div className="w-12 h-12 rounded-lg bg-[#1a2030] border border-white/[0.08] flex items-center justify-center text-slate-400">
+                <Sliders className="w-6 h-6" />
               </div>
-              <h4 className="text-base font-bold text-white">Simulation Engine Ready</h4>
+              <h4 className="text-sm font-medium text-white">Simulation Engine Ready</h4>
               <p className="text-xs text-slate-400 max-w-sm">
-                Select a preset or move the sliders on the left, then click <strong>Run Real-Time AI Simulation</strong> to observe how AquaSync dynamically predicts soil moisture and halts municipal sprinklers.
+                Select a preset or move the sliders on the left, then click <strong>Run real-time simulation</strong> to observe how AquaSync dynamically predicts soil moisture and halts municipal sprinklers.
               </p>
             </div>
           )}
 
           {/* Methodology Footer */}
-          <div className="p-3 rounded-2xl bg-[#151923] border border-[#283144] text-[11px] text-slate-400 flex items-center justify-between">
+          <div className="p-2.5 rounded-lg bg-[#1a2030]/60 border border-white/[0.06] text-[11px] text-slate-400 flex items-center justify-between font-mono">
             <span>Standard: FAO-56 Penman-Monteith</span>
             <span>Pune Tariffs: ₹32/kL • ₹6.50/kWh</span>
           </div>

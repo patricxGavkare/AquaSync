@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloud, CloudRain, Sun, Wind, CloudDrizzle, CloudSun, AlertTriangle } from 'lucide-react';
+import { Cloud, CloudRain, Sun, CloudDrizzle, CloudSun, Droplets } from 'lucide-react';
 
 export default function ForecastCard({ weather }) {
   const timeline = weather && weather.forecastTimeline && weather.forecastTimeline.length > 0
@@ -16,7 +16,7 @@ export default function ForecastCard({ weather }) {
     switch (iconName) {
       case 'CloudRain':
       case 'CloudRainWind':
-        return <CloudRain className="w-4 h-4 text-cyan-400" />;
+        return <CloudRain className="w-4 h-4 text-blue-400" />;
       case 'CloudDrizzle':
         return <CloudDrizzle className="w-4 h-4 text-blue-300" />;
       case 'Sun':
@@ -24,28 +24,28 @@ export default function ForecastCard({ weather }) {
       case 'CloudSun':
         return <CloudSun className="w-4 h-4 text-amber-200" />;
       default:
-        return <Cloud className="w-4 h-4 text-slate-300" />;
+        return <Cloud className="w-4 h-4 text-slate-400" />;
     }
   };
 
   return (
-    <div className="p-5 rounded-3xl bg-[#1c2230] border border-[#262c3d] flex flex-col justify-between shadow-sm">
+    <div className="p-5 rounded-2xl bg-[#11141c] border border-white/[0.08] flex flex-col justify-between shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-bold text-white tracking-tight">
+        <h3 className="text-sm font-semibold text-white tracking-tight">
           Next 24 Hours Microclimate
         </h3>
-        <span className="text-xs text-blue-400 font-medium">Pune Open-Meteo</span>
+        <span className="text-xs text-slate-400 font-mono">Pune Open-Meteo</span>
       </div>
 
       {/* Forecast Row Items */}
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-2">
         {timeline.slice(0, 4).map((item, idx) => (
           <div 
             key={idx}
-            className="flex items-center justify-between py-1.5 px-3 rounded-xl bg-[#151923] border border-[#232838] text-xs"
+            className="flex items-center justify-between py-2 px-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06] text-xs"
           >
-            <div className="w-16 font-medium text-slate-300">
+            <div className="w-16 font-mono text-slate-300">
               {item.timeLabel}
             </div>
 
@@ -54,33 +54,34 @@ export default function ForecastCard({ weather }) {
               <span className="text-slate-400 text-[11px] truncate">{item.condition}</span>
             </div>
 
-            <div className="flex items-center gap-2 text-right">
-              <span className={`text-[11px] font-medium ${item.precipitationProb > 60 ? 'text-cyan-400 font-semibold' : 'text-slate-400'}`}>
-                💧 {item.precipitationProb}%
+            <div className="flex items-center gap-3 text-right">
+              <span className={`text-[11px] font-mono tabular-nums ${item.precipitationProb > 60 ? 'text-blue-400 font-medium' : 'text-slate-400'}`}>
+                {item.precipitationProb}% rain
               </span>
-              <span className="font-bold text-white w-8">{item.temperature}°</span>
+              <span className="font-medium text-white w-8 tabular-nums font-mono">{item.temperature}°</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Active Highlighted Pill Card (Direct match to reference image's blue glowing pill!) */}
-      <div className="mt-4 p-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-lg shadow-blue-600/20 border border-blue-400/30">
+      {/* Active Irrigation Status Card */}
+      <div className="mt-4 p-3.5 rounded-xl bg-[#1a2030] text-white flex items-center justify-between border border-white/[0.08]">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center">
-            <CloudRain className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-lg bg-[#11141c] border border-white/[0.08] flex items-center justify-center text-blue-400">
+            <CloudRain className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-xs font-bold leading-tight">Next Irrigation: 06:00 AM</div>
-            <div className="text-[10px] text-blue-100 mt-0.5">Predicted Rain: 14.2 mm (78% Prob)</div>
+            <div className="text-xs font-medium leading-tight">Next Irrigation: 06:00 AM</div>
+            <div className="text-[11px] text-slate-400 mt-0.5 tabular-nums">Predicted rain: 14.2 mm (78% prob)</div>
           </div>
         </div>
 
         <div className="text-right">
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-blue-700 shadow-sm uppercase tracking-wide">
-            Override OFF
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[#e5484d]/10 text-[#ff8585] border border-[#e5484d]/25 uppercase tracking-wide">
+            <span className="w-1 h-1 rounded-full bg-[#e5484d]"></span>
+            Pumps Paused
           </span>
-          <div className="text-[10px] text-blue-100 mt-0.5">Pumps Paused</div>
+          <div className="text-[10px] text-slate-400 mt-0.5">Override Active</div>
         </div>
       </div>
     </div>
