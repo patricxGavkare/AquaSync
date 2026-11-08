@@ -1,0 +1,286 @@
+{
+  "version": "2.0.0",
+  "metadata": {
+    "name": "AquaSync",
+    "description": "AI-Driven Predictive Municipal Irrigation Control - PCCOE International Grand Challenge 2026",
+    "languages": [
+      "javascript",
+      "css",
+      "markdown",
+      "json"
+    ],
+    "frameworks": [
+      "React",
+      "Express",
+      "Tailwind CSS",
+      "Leaflet"
+    ],
+    "createdAt": "2026-11-08T09:40:35.197Z",
+    "updatedAt": "2026-11-08T09:40:35.197Z"
+  },
+  "nodes": [
+    {
+      "id": "node:backend/server.js",
+      "type": "file",
+      "name": "backend/server.js",
+      "filePath": "backend/server.js",
+      "summary": "Express server entrypoint; orchestrates REST APIs, static assets, and background weather sync.",
+      "tags": [
+        "entrypoint",
+        "express",
+        "api",
+        "backend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:backend/database.js",
+      "type": "file",
+      "name": "backend/database.js",
+      "filePath": "backend/database.js",
+      "summary": "Native SQLite database service managing parks, telemetry logs, and override audit records.",
+      "tags": [
+        "database",
+        "sqlite",
+        "persistence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:backend/services/aiEngine.js",
+      "type": "file",
+      "name": "backend/services/aiEngine.js",
+      "filePath": "backend/services/aiEngine.js",
+      "summary": "Core climate physics engine calculating FAO-56 Penman-Monteith ET0, crop factors, and pump overrides.",
+      "tags": [
+        "ai",
+        "physics",
+        "fao-56",
+        "evapotranspiration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "node:backend/services/weatherService.js",
+      "type": "file",
+      "name": "backend/services/weatherService.js",
+      "filePath": "backend/services/weatherService.js",
+      "summary": "Open-Meteo satellite weather API ingestion client for Pune coordinates (18.52° N, 73.85° E).",
+      "tags": [
+        "weather",
+        "satellite",
+        "api",
+        "open-meteo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:frontend/src/App.jsx",
+      "type": "file",
+      "name": "frontend/src/App.jsx",
+      "filePath": "frontend/src/App.jsx",
+      "summary": "Main React application container and router coordinating the 5 dedicated modular views.",
+      "tags": [
+        "react",
+        "frontend",
+        "container",
+        "router"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:frontend/src/components/DashboardHome.jsx",
+      "type": "component",
+      "name": "DashboardHome",
+      "filePath": "frontend/src/components/DashboardHome.jsx",
+      "summary": "Executive overview dashboard with photographic landmark park cards, meteorological hero, and tabular KPIs.",
+      "tags": [
+        "ui",
+        "dashboard",
+        "unslop",
+        "overview"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:frontend/src/components/PuneMap.jsx",
+      "type": "component",
+      "name": "PuneMap",
+      "filePath": "frontend/src/components/PuneMap.jsx",
+      "summary": "Interactive Leaflet GIS map bounded to Pune with Dark View toggle, SVG status pins, and zone popups.",
+      "tags": [
+        "gis",
+        "map",
+        "leaflet",
+        "spatial"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "node:frontend/src/components/SimulationView.jsx",
+      "type": "component",
+      "name": "SimulationView",
+      "filePath": "frontend/src/components/SimulationView.jsx",
+      "summary": "Judges' Live Simulation Lab enabling real-time microclimate slider adjustments and instant FAO-56 recalculation.",
+      "tags": [
+        "simulation",
+        "lab",
+        "sliders",
+        "testing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:frontend/src/components/AnalyticsView.jsx",
+      "type": "component",
+      "name": "AnalyticsView",
+      "filePath": "frontend/src/components/AnalyticsView.jsx",
+      "summary": "Municipal water, power, and carbon audit ledger with official PMC (₹32/kL) and MSEDCL (₹6.50/kWh) tariffs.",
+      "tags": [
+        "analytics",
+        "ledger",
+        "tariffs",
+        "audit"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:frontend/src/components/WatchmanModal.jsx",
+      "type": "component",
+      "name": "WatchmanModal",
+      "filePath": "frontend/src/components/WatchmanModal.jsx",
+      "summary": "Ground Guard bilingual Marathi/English mobile bridge for on-duty park watchmen with 1-tap confirmation.",
+      "tags": [
+        "ground-guard",
+        "bilingual",
+        "marathi",
+        "mobile"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:server-to-aiEngine",
+      "source": "node:backend/server.js",
+      "target": "node:backend/services/aiEngine.js",
+      "type": "calls",
+      "label": "evaluates soil moisture and overrides"
+    },
+    {
+      "id": "edge:server-to-weatherService",
+      "source": "node:backend/server.js",
+      "target": "node:backend/services/weatherService.js",
+      "type": "calls",
+      "label": "polls satellite weather telemetry"
+    },
+    {
+      "id": "edge:server-to-database",
+      "source": "node:backend/server.js",
+      "target": "node:backend/database.js",
+      "type": "calls",
+      "label": "persists park states and telemetry logs"
+    },
+    {
+      "id": "edge:app-to-dashboard",
+      "source": "node:frontend/src/App.jsx",
+      "target": "node:frontend/src/components/DashboardHome.jsx",
+      "type": "contains",
+      "label": "renders Tab 1 overview"
+    },
+    {
+      "id": "edge:app-to-map",
+      "source": "node:frontend/src/App.jsx",
+      "target": "node:frontend/src/components/PuneMap.jsx",
+      "type": "contains",
+      "label": "renders Tab 2 geospatial mesh"
+    },
+    {
+      "id": "edge:app-to-simulation",
+      "source": "node:frontend/src/App.jsx",
+      "target": "node:frontend/src/components/SimulationView.jsx",
+      "type": "contains",
+      "label": "renders Tab 4 simulation lab"
+    },
+    {
+      "id": "edge:app-to-analytics",
+      "source": "node:frontend/src/App.jsx",
+      "target": "node:frontend/src/components/AnalyticsView.jsx",
+      "type": "contains",
+      "label": "renders Tab 5 financial ledger"
+    },
+    {
+      "id": "edge:app-to-watchman",
+      "source": "node:frontend/src/App.jsx",
+      "target": "node:frontend/src/components/WatchmanModal.jsx",
+      "type": "contains",
+      "label": "opens bilingual ground guard bridge"
+    }
+  ],
+  "layers": [
+    {
+      "id": "presentation",
+      "name": "Presentation Layer (React 19 & Leaflet)",
+      "description": "Frontend user interface following Unslop craft tokens and 5 modular views.",
+      "nodeIds": [
+        "node:frontend/src/App.jsx",
+        "node:frontend/src/components/DashboardHome.jsx",
+        "node:frontend/src/components/PuneMap.jsx",
+        "node:frontend/src/components/SimulationView.jsx",
+        "node:frontend/src/components/AnalyticsView.jsx",
+        "node:frontend/src/components/WatchmanModal.jsx"
+      ]
+    },
+    {
+      "id": "application",
+      "name": "Application & API Layer (Express REST)",
+      "description": "Server controllers, endpoint handlers, and simulation dispatchers.",
+      "nodeIds": [
+        "node:backend/server.js"
+      ]
+    },
+    {
+      "id": "domain",
+      "name": "Domain Physics Layer (FAO-56 Engine)",
+      "description": "Agronomic science algorithms, reference evapotranspiration, and crop coefficients.",
+      "nodeIds": [
+        "node:backend/services/aiEngine.js"
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure & Data Layer (SQLite & Satellite)",
+      "description": "Native SQLite database and Open-Meteo satellite weather client.",
+      "nodeIds": [
+        "node:backend/database.js",
+        "node:backend/services/weatherService.js"
+      ]
+    }
+  ],
+  "guidedTour": [
+    {
+      "step": 1,
+      "title": "Executive Command Overview",
+      "description": "Starts at DashboardHome showcasing real-time water, energy, and money savings across Pune landmark parks.",
+      "nodeId": "node:frontend/src/components/DashboardHome.jsx"
+    },
+    {
+      "step": 2,
+      "title": "Geospatial Relay Mesh",
+      "description": "Explore the Pune Regional Map showing Sarasbaug, Sambhaji Garden, and Japanese Garden valves.",
+      "nodeId": "node:frontend/src/components/PuneMap.jsx"
+    },
+    {
+      "step": 3,
+      "title": "Judges' Live Simulation Lab",
+      "description": "Demonstrates interactive parameter manipulation and instant FAO-56 decision recalculation.",
+      "nodeId": "node:frontend/src/components/SimulationView.jsx"
+    },
+    {
+      "step": 4,
+      "title": "FAO-56 Penman-Monteith Engine",
+      "description": "The mathematical backbone calculating soil moisture deficit and triggering automatic valve halts.",
+      "nodeId": "node:backend/services/aiEngine.js"
+    }
+  ]
+}
