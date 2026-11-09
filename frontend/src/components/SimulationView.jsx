@@ -25,7 +25,17 @@ export default function SimulationView({ onSimulationApplied }) {
         })
       });
       const data = await res.json();
-      setSimResults(data);
+      const isHalted = (data.metrics?.overriddenParksCount > 0) || (data.parks && data.parks.some(p => p.simulatedDecision === 'OVERRIDDEN'));
+      const normalized = {
+        decision: isHalted ? 'OVERRIDE_HALT' : 'SCHEDULE_CONFIRMED',
+        explanation: (data.parks && data.parks[0]?.reasoning) || (isHalted ? `Forecasted rain (${rainMm} mm) satisfies soil moisture deficit. All 3 park valves automatically paused.` : `Dry weather requires normal scheduled irrigation cycle.`),
+        totalLitersSaved: data.metrics?.totalLitersSaved ?? 0,
+        totalKwhSaved: data.metrics?.totalKwhSaved ?? 0,
+        totalInrSaved: data.metrics?.totalInrSaved ?? 0,
+        simulatedEt0: data.et0_calculated ?? 0,
+        parks: data.parks || []
+      };
+      setSimResults(normalized);
       if (onSimulationApplied) onSimulationApplied();
     } catch (err) {
       console.error('Simulation error:', err);
@@ -52,7 +62,7 @@ export default function SimulationView({ onSimulationApplied }) {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-white tracking-tight">
-              Judges' Live Simulation Lab
+              AI Microclimate Simulation Lab
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
               Dynamically manipulate Pune microclimate variables to observe real-time FAO-56 Penman-Monteith AI overrides.
@@ -216,28 +226,53 @@ export default function SimulationView({ onSimulationApplied }) {
                 <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
                   <span className="text-slate-400 text-[11px] block">Simulated water saved</span>
                   <span className="text-base font-medium text-white tabular-nums font-mono">
-                    {simResults.totalLitersSaved.toLocaleString()} L
+                    {simResults.totalLitersSaved?.toLocaleString() || '0'} L
                   </span>
                 </div>
                 <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
                   <span className="text-slate-400 text-[11px] block">Grid power conserved</span>
                   <span className="text-base font-medium text-amber-300 tabular-nums font-mono">
-                    {simResults.totalKwhSaved} kWh
+                    {simResults.totalKwhSaved ?? 0} kWh
                   </span>
                 </div>
                 <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
                   <span className="text-slate-400 text-[11px] block">PMC budget saved</span>
                   <span className="text-base font-medium text-[#4cc38a] tabular-nums font-mono">
-                    ₹ {simResults.totalInrSaved.toLocaleString()}
+                    ₹ {simResults.totalInrSaved?.toLocaleString() || '0'}
                   </span>
                 </div>
                 <div className="p-3 rounded-lg bg-[#1a2030]/60 border border-white/[0.06]">
                   <span className="text-slate-400 text-[11px] block">Calculated FAO-56 ET₀</span>
                   <span className="text-base font-medium text-slate-200 tabular-nums font-mono">
-                    {simResults.simulatedEt0} mm/day
+                    {simResults.simulatedEt0 ?? 0} mm/day
                   </span>
                 </div>
               </div>
+
+              {/* Individual Park Decisions */}
+              {simResults.parks && simResults.parks.length > 0 && (
+                <div className="space-y-1.5 pt-2 border-t border-white/[0.06]">
+                  <span className="text-[11px] text-slate-400 font-medium block">
+                    Pune Municipal Valve Telemetry
+                  </span>
+                  {simResults.parks.map((p) => (
+                    <div key={p.id} className="p-2.5 rounded-lg bg-[#1a2030]/60 border border-white/[0.06] flex items-center justify-between text-xs">
+                      <div className="pr-2">
+                        <span className="font-medium text-white">{p.name}</span>
+                        <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">{p.reasoning}</p>
+                      </div>
+                      <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${
+                        p.simulatedDecision === 'OVERRIDDEN'
+                          ? 'bg-[#e5484d]/10 text-[#ff8585] border border-[#e5484d]/25'
+                          : 'bg-[#4cc38a]/10 text-[#4cc38a] border border-[#4cc38a]/25'
+                      }`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${p.simulatedDecision === 'OVERRIDDEN' ? 'bg-[#e5484d]' : 'bg-[#4cc38a]'}`}></span>
+                        {p.simulatedDecision === 'OVERRIDDEN' ? 'VALVE HALTED' : 'IRRIGATE'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400 space-y-2">

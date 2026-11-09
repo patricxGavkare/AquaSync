@@ -54,7 +54,7 @@ export default function SimulationModal({ isOpen, onClose, onRunSimulation }) {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-white leading-tight">
-                Judges' Live Simulation Lab
+                AI Microclimate Simulation Lab
               </h3>
               <p className="text-xs text-slate-400">
                 Adjust microclimate variables to test dynamic FAO-56 AI overrides in real time
